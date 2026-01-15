@@ -9,10 +9,10 @@
 int main()
 {
 	const char *Races[] = {"Dwarf","Human","Orc"};
-	char **map,buf[200],c;
-	int x=5,y=30,i,rch,spawnpoint,j;
+	char **map,buf[200],c,direction,temp_pos;
+	int x=30,y=5,i,rch,curpos,j,next_pos;
 	srand(time(NULL));
-	spawnpoint = rand()%(y+1);
+	curpos = rand()%x;
 
 	map = createmap(x,y);
 
@@ -27,29 +27,38 @@ int main()
 	Char char1 = createchar(buf,rch);
 
 	fprintf(stdout,"Your champion has been created\n");
-	map[x-2][spawnpoint] = char1.race; 
+	map[y-2][curpos] = char1.race; 
 
 	fprintf(stdout,"His name is %s\n", char1.name);
 	fprintf(stdout,"His race is %s\n", Races[rch]);
 	fprintf(stdout,"His hp is %d\n", char1.hp);
 
-	for(i=0;i<x;i++)
+	displaymap(map,x,y,curpos);
+
+	while (TRUE)
 	{
-		if(i < (x-2))
-			fprintf(stdout,"\n");
-		else if(i == (x-2))
-			for(j=0;j<y;j++)
-			{
-				if (j == spawnpoint)
-				{
-					fprintf(stdout,"%c\n",map[i][spawnpoint]);
-					break;
-				}
-				else
-					fprintf(stdout," ");
-			}
+		fprintf(stdout,"Right > Left < Exit *\n");
+		direction = getchar();
+		while((c = getchar()) != '\n');
+
+		if (direction != '*')
+		{
+			next_pos = charmove(x,curpos,direction);
+
+			temp_pos = map[y-2][curpos];
+			map[y-2][curpos] = map[y-2][next_pos];
+			map[y-2][next_pos] = temp_pos;
+
+			curpos = next_pos;
+
+
+			displaymap(map,x,y,curpos);
+		}
 		else
-			fprintf(stdout,"%s\n",map[i]);
+		{
+			fprintf(stdout,"Thank you for using our app\n");
+			exit(1);
+		}
 	}
 
 	return 0;
