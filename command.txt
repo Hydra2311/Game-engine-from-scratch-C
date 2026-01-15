@@ -1,0 +1,1 @@
+gcc -c engine.c -o engine.o && ar rcs libengine.a engine.o && gcc game.c -L. -lengine && ./a.out
