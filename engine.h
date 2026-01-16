@@ -19,5 +19,6 @@ char ** createmap(int , int); /*Creates map with given dimensions*/
 Char createchar(char[] ,int ); /*Creates a stat block*/
 int charmove(int ,int ,char ); /*Movement to the right or left*/
 void displaymap(char **,int ,int ,int ); /*Prints map to the screen*/
+void charshoot(char **,int ,int ,int ); /*Shoots bullet*/
 
 #endif

@@ -9,7 +9,7 @@
 int main()
 {
 	const char *Races[] = {"Dwarf","Human","Orc"};
-	char **map,buf[200],c,direction,temp_pos;
+	char **map,buf[200],c,response,temp_pos;
 	int x=30,y=5,i,rch,curpos,j,next_pos;
 	srand(time(NULL));
 	curpos = rand()%x;
@@ -37,27 +37,33 @@ int main()
 
 	while (TRUE)
 	{
-		fprintf(stdout,"Right > Left < Exit *\n");
-		direction = getchar();
+		fprintf(stdout,"Right > Left < Shoot - Exit *\n");
+		response = getchar();
 		while((c = getchar()) != '\n');
+		system("clear");
 
-		if (direction != '*')
+		switch(response)
 		{
-			next_pos = charmove(x,curpos,direction);
-
-			temp_pos = map[y-2][curpos];
-			map[y-2][curpos] = map[y-2][next_pos];
-			map[y-2][next_pos] = temp_pos;
-
-			curpos = next_pos;
-
-
-			displaymap(map,x,y,curpos);
-		}
-		else
-		{
-			fprintf(stdout,"Thank you for using our app\n");
-			exit(1);
+			case '<': case '>':
+			{
+				next_pos = charmove(x,curpos,response);
+				temp_pos = map[y-2][curpos];
+				map[y-2][curpos] = map[y-2][next_pos];
+				map[y-2][next_pos] = temp_pos;
+				curpos = next_pos;
+				displaymap(map,x,y,curpos);
+				break;
+			}
+			case '-':
+			{
+				charshoot(map,x,y,curpos);
+				break;
+			}
+			case '*':
+			{
+				fprintf(stdout,"Thank you for using our app\n");
+				exit(1);
+			}
 		}
 	}
 

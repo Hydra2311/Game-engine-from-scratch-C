@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <unistd.h>
 
 char ** createmap(int x,int y) /*the dimensions of the map you wish to create*/
 {	
@@ -96,4 +97,36 @@ int charmove(int x,int currentposition,char direction) /*Character movement < or
 	} 
 
 	return currentposition;
+}
+
+void charshoot(char **map,int x,int y,int curpos) /*Function to shoot a bullet*/
+{
+	/*Checks if character is on the border, if not it creates and moves a bullet thoughout*/
+	/*the array. It continues until either it hits a border or another thing inside the array.*/
+	int i;
+
+	if(curpos != (x-1))
+	{	
+		for(i=0;i<x-1-curpos;i++)
+		{
+			if (map[y-2][curpos+i+1] == ' ')
+			{
+				if (map[y-2][curpos+i] == '-')
+					map[y-2][curpos+i] = ' ';
+				map[y-2][curpos+i+1] = '-';
+			}
+			else
+			{
+				map[y-2][curpos+i] = ' ';
+				break;
+			}
+			displaymap(map,x,y,curpos);
+			usleep(150000);
+			system("clear");
+		}
+		map[y-2][x-1] = ' ';
+		displaymap(map,x,y,curpos);
+		system("clear");
+	}
+	displaymap(map,x,y,curpos);
 }
