@@ -130,3 +130,34 @@ void charshoot(char **map,int x,int y,int curpos) /*Function to shoot a bullet*/
 	}
 	displaymap(map,x,y,curpos);
 }
+
+Form fillform(char user[],char pass[]) /*Fills register/login form*/
+{
+	Form form1;
+
+	strcpy(form1.username,user);
+	strcpy(form1.password,pass);
+
+	return form1;
+}
+
+int checkform(Form checkform,Form forcheck) 
+{
+	/*compares the register form with the login form and returns a type casted*/
+	/*version of the response*/
+	int response;
+
+	if(strcmp(checkform.username,forcheck.username) == 0)
+	{
+		if(strcmp(checkform.password,forcheck.password) == 0)
+			response = 2;
+		else
+			response = 1;
+	}
+	else
+	{
+		response = 0;
+	}
+
+	return ((Checklogin)response);
+}
