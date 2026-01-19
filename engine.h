@@ -1,7 +1,6 @@
 #ifndef ENGINE_H
 #define ENGINE_H
 
-#define GRAVITY 1
 #define MAX_HP 10
 
 typedef enum {Dwarf,Human,Orc} Race; /*For character stat block*/
@@ -30,5 +29,6 @@ void displaymap(char **,int ,int ,int ); /*Prints map to the screen*/
 void charshoot(char **,int ,int ,int ); /*Shoots bullet*/
 Form fillform(char[] ,char[] ); /*Putting username & password in struct*/
 int checkform(Form ,Form ); /*Comparing the register form with the login form*/
+void jump(char **,int ,int ,int ,int ); /*Jumping based on the height given*/
 
 #endif

@@ -5,13 +5,14 @@
 #include <string.h>
 #define TRUE 1
 #define FALSE 0
+#define HEIGHT 2
 
 int main()
 {
 	const char *Races[] = {"Dwarf","Human","Orc"};
 	const char *Checklogins[] = {"IncorrectUsername","IncorrectPassword","Correct"};
 	char **map,buf[200],buf2[30],response,temp_pos,c;
-	int x=30,y=5,i,rch,curpos,j,next_pos,flag = FALSE,check,maxtries = 3;
+	int x=30,y=4,i,rch,curpos,j,next_pos,flag = FALSE,check,maxtries = 3;
 	FILE *fpa,*fpr;
 	Form baseform,forcheck;
 	fpa = fopen("logindata.txt","a");
@@ -113,7 +114,7 @@ int main()
 
 	while (TRUE)
 	{
-		fprintf(stdout,"Right > Left < Shoot - Exit *\n");
+		fprintf(stdout,"Right > Left < Shoot - Jump ^ Exit *\n");
 		response = getchar();
 		while((c = getchar()) != '\n');
 		system("clear");
@@ -133,6 +134,11 @@ int main()
 			case '-':
 			{
 				charshoot(map,x,y,curpos);
+				break;
+			}
+			case '^':
+			{
+				jump(map,x,y,curpos,HEIGHT);
 				break;
 			}
 			case '*':

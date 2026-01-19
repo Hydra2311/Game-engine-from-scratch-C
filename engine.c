@@ -63,23 +63,24 @@ void displaymap(char **map,int x,int y,int curpos) /*Function to display the map
 
 	for(i=0;i<y;i++)
 	{
-		if(i < (y-2))
-			fprintf(stdout,"\n");
-		else if(i == (y-2))
+		if(i <= (y-2))
 		{
 			for(j=0;j<x;j++)
 			{
-				if (j == curpos)
+				if(j<x-1)
 				{
-					fprintf(stdout,"%c",map[i][curpos]); /*Displays the character*/
+					fprintf(stdout,"%c",map[i][j]);
 				}
 				else
-					fprintf(stdout,"%c",map[i][j]); /*Diplays empty space or objects/scenery*/
+				{
+					fprintf(stdout,"%c\n",map[i][j]);
+				}
 			}
-			fprintf(stdout, "\n");
 		}
 		else
+		{
 			fprintf(stdout,"%s\n",map[i]);
+		}
 	}
 }
 
@@ -121,7 +122,7 @@ void charshoot(char **map,int x,int y,int curpos) /*Function to shoot a bullet*/
 				break;
 			}
 			displaymap(map,x,y,curpos);
-			usleep(150000);
+			usleep(85000);
 			system("clear");
 		}
 		map[y-2][x-1] = ' ';
@@ -160,4 +161,47 @@ int checkform(Form checkform,Form forcheck)
 	}
 
 	return ((Checklogin)response);
+}
+
+void jump(char **map,int x,int y,int curpos,int height) /*Function to jump*/
+{
+	/*Moves the character first up a set amount of blocks given by the height*/
+	/*var and then it returns to its original position.*/
+	int i,curry,base = y-2,peak;
+	char temp;
+
+	if (height > base)
+	{
+		fprintf(stderr,"Height too low for this jump");
+		displaymap(map,x,y,curpos);
+	}
+	else
+	{
+		for(i=0;i<height;i++)
+		{
+			curry = base - (i+1);
+
+			temp = map[base-i][curpos];
+			map[base-i][curpos] = map[curry][curpos];
+			map[curry][curpos] = temp;
+			
+			displaymap(map,x,y,curpos);
+			usleep(110000);
+			system("clear");
+		}
+		peak = base - height;
+		for(i=0;i<height;i++)
+		{
+			curry = peak + (i+1);
+
+			temp = map[peak+i][curpos];
+			map[peak+i][curpos] = map[curry][curpos];
+			map[curry][curpos] = temp;
+
+			displaymap(map,x,y,curpos);
+			usleep(180000);
+			system("clear");
+		}
+		displaymap(map,x,y,curpos);
+	}
 }
