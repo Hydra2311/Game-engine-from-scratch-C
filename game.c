@@ -11,8 +11,13 @@ int main()
 {
 	const char *Races[] = {"Dwarf","Human","Orc"};
 	const char *Checklogins[] = {"IncorrectUsername","IncorrectPassword","Correct"};
+	const char *EnRaces[] = {"Goblin","Hobgoblin"};
 	char **map,buf[200],buf2[30],response,temp_pos,c;
-	int x=30,y=4,i,rch,curpos,j,next_pos,flag = FALSE,check,maxtries = 3;
+	int x=30,y=4;
+	int rch,erch;
+	int i,j;
+	int flag = FALSE,check,maxtries = 3;
+	int curpos,next_pos,enepos,base;
 	FILE *fpa,*fpr;
 	Form baseform,forcheck;
 	fpa = fopen("logindata.txt","a");
@@ -92,6 +97,7 @@ int main()
 	curpos = rand()%x;
 
 	map = createmap(x,y);
+	base = y-2;
 
 	fprintf(stdout,"Choose a name: ");
 	fgets(buf,30,stdin);
@@ -104,7 +110,7 @@ int main()
 	Char char1 = createchar(buf,rch);
 
 	fprintf(stdout,"Your champion has been created\n");
-	map[y-2][curpos] = char1.race; 
+	map[base][curpos] = char1.race; 
 
 	fprintf(stdout,"His name is %s\n", char1.name);
 	fprintf(stdout,"His race is %s\n", Races[rch]);
@@ -114,7 +120,7 @@ int main()
 
 	while (TRUE)
 	{
-		fprintf(stdout,"Right > Left < Shoot - Jump ^ Exit *\n");
+		fprintf(stdout,"Right > Left < ShootRight R Shootleft L Jump ^ SpawnEnemy & Exit *\n");
 		response = getchar();
 		while((c = getchar()) != '\n');
 		system("clear");
@@ -124,21 +130,43 @@ int main()
 			case '<': case '>':
 			{
 				next_pos = charmove(x,curpos,response);
-				temp_pos = map[y-2][curpos];
-				map[y-2][curpos] = map[y-2][next_pos];
-				map[y-2][next_pos] = temp_pos;
-				curpos = next_pos;
+				if (map[base][next_pos] == ' ')
+				{
+					temp_pos = map[base][curpos];
+					map[base][curpos] = map[base][next_pos];
+					map[base][next_pos] = temp_pos;
+					curpos = next_pos;
+				}
 				displaymap(map,x,y,curpos);
 				break;
 			}
-			case '-':
+			case 'R':
 			{
-				charshoot(map,x,y,curpos);
+				charshootr(map,x,y,curpos);
+				break;
+			}
+			case 'L':
+			{
+				charshootl(map,x,y,curpos);
 				break;
 			}
 			case '^':
 			{
 				jump(map,x,y,curpos,HEIGHT);
+				break;
+			}
+			case '&':
+			{
+				fprintf(stdout,"Enemy race(0.Goblin,1.Hobgoblin): ");
+				scanf("%d",&erch);
+				while ((c = getchar()) != '\n');
+				erch = (EnRace) erch;
+				Enemy enemy = createene(erch);
+				fprintf(stdout,"Your %s has been created\n",EnRaces[erch]);
+
+				enepos = spawnenemy(map,x,y,curpos);
+				map[base][enepos] = enemy.race;
+				displaymap(map,x,y,curpos);
 				break;
 			}
 			case '*':

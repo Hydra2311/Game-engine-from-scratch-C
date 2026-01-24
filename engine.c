@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
+#include <time.h>
 
 char ** createmap(int x,int y) /*the dimensions of the map you wish to create*/
 {	
@@ -100,32 +101,67 @@ int charmove(int x,int currentposition,char direction) /*Character movement < or
 	return currentposition;
 }
 
-void charshoot(char **map,int x,int y,int curpos) /*Function to shoot a bullet*/
+void charshootr(char **map,int x,int y,int curpos) /*Function to shoot a bullet to the right*/
 {
 	/*Checks if character is on the border, if not it creates and moves a bullet thoughout*/
 	/*the array. It continues until either it hits a border or another thing inside the array.*/
-	int i;
+	int i,base = y-2;
 
 	if(curpos != (x-1))
 	{	
 		for(i=0;i<x-1-curpos;i++)
 		{
-			if (map[y-2][curpos+i+1] == ' ')
+			if (map[base][curpos+i+1] == ' ')
 			{
-				if (map[y-2][curpos+i] == '-')
-					map[y-2][curpos+i] = ' ';
-				map[y-2][curpos+i+1] = '-';
+				if (map[base][curpos+i] == '-')
+					map[base][curpos+i] = ' ';
+				map[base][curpos+i+1] = '-';
 			}
 			else
 			{
-				map[y-2][curpos+i] = ' ';
+				map[base][curpos+i] = ' ';
 				break;
 			}
 			displaymap(map,x,y,curpos);
 			usleep(85000);
 			system("clear");
 		}
-		map[y-2][x-1] = ' ';
+
+		if (map[base][x-1] == '-')
+			map[base][x-1] = ' ';
+		displaymap(map,x,y,curpos);
+		system("clear");
+	}
+	displaymap(map,x,y,curpos);
+}
+
+void charshootl(char **map,int x,int y,int curpos) /*Function to shoot a bullet to the left*/
+{
+	/*It performs the same way as charshootr*/
+	int i=curpos,base = y-2;
+
+	if(curpos > 0)
+	{	
+		while(i>-1)
+		{
+			if (map[base][i-1] == ' ')
+			{
+				if (map[base][i] == '-')
+					map[base][i] = ' ';
+				map[base][i-1] = '-';
+			}
+			else
+			{
+				map[base][i] = ' ';
+				break;
+			}
+			displaymap(map,x,y,curpos);
+			usleep(85000);
+			system("clear");
+			i--;
+		}
+		if (map[base][0] == '-')
+			map[base][0] = ' ';
 		displaymap(map,x,y,curpos);
 		system("clear");
 	}
@@ -166,7 +202,7 @@ int checkform(Form checkform,Form forcheck)
 void jump(char **map,int x,int y,int curpos,int height) /*Function to jump*/
 {
 	/*Moves the character first up a set amount of blocks given by the height*/
-	/*var and then it returns to its original position.*/
+	/*variable and then it returns to its original position.*/
 	int i,curry,base = y-2,peak;
 	char temp;
 
@@ -204,4 +240,41 @@ void jump(char **map,int x,int y,int curpos,int height) /*Function to jump*/
 		}
 		displaymap(map,x,y,curpos);
 	}
+}
+
+int spawnenemy(char **map,int x,int y,int curpos) /*Function to spawn enemy*/
+{
+	/*Randomly generates a position on the x-axis and it returns it if*/
+	/*it's empty.*/
+	int enepos;
+	srand(time(NULL));
+	enepos = rand()%x;
+
+	while(enepos==curpos)
+	{
+		enepos = rand()%x;
+	}
+
+	return enepos;
+}
+
+Enemy createene(int choice) /*Enemy stat block*/
+{
+	/*Based on the struct in engine.h*/
+	Enemy baseenemy;
+
+	if (choice == Goblin)
+	{
+		baseenemy.race = 'g';
+		baseenemy.hp = 2;
+		baseenemy.power = 1;
+	}
+	else if (choice == Hobgoblin)
+	{
+		baseenemy.race = 'H';
+		baseenemy.hp = 4;
+		baseenemy.power = 2;
+	}
+
+	return baseenemy;
 }
