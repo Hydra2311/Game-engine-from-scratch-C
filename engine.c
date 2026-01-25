@@ -119,7 +119,8 @@ void charshootr(char **map,int x,int y,int curpos) /*Function to shoot a bullet 
 			}
 			else
 			{
-				map[base][curpos+i] = ' ';
+				if (map[base][curpos+i] == '-')
+					map[base][curpos+i] = ' ';
 				break;
 			}
 			displaymap(map,x,y,curpos);
@@ -152,7 +153,8 @@ void charshootl(char **map,int x,int y,int curpos) /*Function to shoot a bullet 
 			}
 			else
 			{
-				map[base][i] = ' ';
+				if (map[base][i] == '-')
+					map[base][i] = ' ';
 				break;
 			}
 			displaymap(map,x,y,curpos);
@@ -242,17 +244,19 @@ void jump(char **map,int x,int y,int curpos,int height) /*Function to jump*/
 	}
 }
 
-int spawnenemy(char **map,int x,int y,int curpos) /*Function to spawn enemy*/
+int spawnenemy(char **map,int x,int y) /*Function to spawn enemy*/
 {
 	/*Randomly generates a position on the x-axis and it returns it if*/
 	/*it's empty.*/
-	int enepos;
+	int enepos,att = 0,maxatt = 75;
 	srand(time(NULL));
 	enepos = rand()%x;
+	int base = y-2;
 
-	while(enepos==curpos)
+	while(map[base][enepos] != ' ' && att < maxatt)
 	{
 		enepos = rand()%x;
+		att++;
 	}
 
 	return enepos;

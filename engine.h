@@ -41,6 +41,6 @@ Form fillform(char[] ,char[] ); /*Puts username & password in struct*/
 int checkform(Form ,Form ); /*Compares the register form with the login form*/
 void jump(char **,int ,int ,int ,int ); /*Jumps based on the height given*/
 Enemy createene(int ); /*Creates an enemy's stat block*/
-int spawnenemy(char **,int ,int ,int ); /*Randomly spawns an enemy on the map*/
+int spawnenemy(char **,int ,int ); /*Randomly spawns an enemy on the map*/
 
 #endif

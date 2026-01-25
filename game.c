@@ -14,12 +14,15 @@ int main()
 	const char *EnRaces[] = {"Goblin","Hobgoblin"};
 	char **map,buf[200],buf2[30],response,temp_pos,c;
 	int x=30,y=4;
-	int rch,erch;
+	int rch,erch,enemycount=0,enemycapacity=5;
 	int i,j;
 	int flag = FALSE,check,maxtries = 3;
 	int curpos,next_pos,enepos,base;
 	FILE *fpa,*fpr;
 	Form baseform,forcheck;
+	Enemy *enemies;
+	Char char1;
+
 	fpa = fopen("logindata.txt","a");
 	fpr = fopen("logindata.txt","r");
 	if (fpa == NULL)
@@ -107,7 +110,7 @@ int main()
 	scanf("%d",&rch);
 	while((c = getchar()) != '\n');
 
-	Char char1 = createchar(buf,rch);
+	char1 = createchar(buf,rch);
 
 	fprintf(stdout,"Your champion has been created\n");
 	map[base][curpos] = char1.race; 
@@ -161,12 +164,24 @@ int main()
 				scanf("%d",&erch);
 				while ((c = getchar()) != '\n');
 				erch = (EnRace) erch;
-				Enemy enemy = createene(erch);
+				if(enemycount == 0)
+				{
+					enemies = (Enemy *)malloc(enemycapacity * sizeof(Enemy));
+				}
+				if(enemycount >= enemycapacity)
+				{
+					Enemy *tempenemies;
+					enemycapacity += 5;
+					tempenemies = (Enemy *)realloc(enemies,(enemycapacity * sizeof(Enemy)));
+					enemies = tempenemies;
+				}
+				enemies[enemycount] = createene(erch);
 				fprintf(stdout,"Your %s has been created\n",EnRaces[erch]);
 
-				enepos = spawnenemy(map,x,y,curpos);
-				map[base][enepos] = enemy.race;
+				enepos = spawnenemy(map,x,y);
+				map[base][enepos] = enemies[enemycount].race;
 				displaymap(map,x,y,curpos);
+				enemycount++;
 				break;
 			}
 			case '*':
@@ -174,6 +189,24 @@ int main()
 				fprintf(stdout,"Thank you for using our app\n");
 				exit(1);
 			}
+		}
+		if((enemycount>0) && (enepos>curpos) && (response == 'R'))
+		{
+			enemies[enemycount-1].hp = enemies[enemycount-1].hp - 1;
+			if (enemies[enemycount-1].hp <= 0)
+			{
+				map[base][enepos] = ' ';
+				enemycount--;
+			}
+		}
+		else if((enemycount>0) && (enepos<curpos) && (response == 'L'))
+		{
+			enemies[enemycount-1].hp = enemies[enemycount-1].hp - 1;
+			if (enemies[enemycount-1].hp <= 0)
+			{
+				map[base][enepos] = ' ';
+				enemycount--;
+			}			
 		}
 	}
 
