@@ -282,3 +282,10 @@ Enemy createene(int choice) /*Enemy stat block*/
 
 	return baseenemy;
 }
+
+int randspawn(int x)
+{
+	srand(time(NULL));
+
+	return (rand()%x);
+}

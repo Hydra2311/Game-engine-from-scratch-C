@@ -30,6 +30,11 @@ typedef struct /*Login/Register form*/
 	char password[30];
 }Form;
 
+typedef struct
+{
+	char card[20];
+	int points;
+}Blackjack;
 
 char ** createmap(int , int); /*Creates map with given dimensions*/
 Char createchar(char[] ,int ); /*Creates a stat block*/
@@ -42,5 +47,6 @@ int checkform(Form ,Form ); /*Compares the register form with the login form*/
 void jump(char **,int ,int ,int ,int ); /*Jumps based on the height given*/
 Enemy createene(int ); /*Creates an enemy's stat block*/
 int spawnenemy(char **,int ,int ); /*Randomly spawns an enemy on the map*/
+int randspawn(int );
 
 #endif

@@ -97,7 +97,7 @@ int main()
 	}
 
 	srand(time(NULL));
-	curpos = rand()%x;
+	curpos = randspawn(x);
 
 	map = createmap(x,y);
 	base = y-2;
