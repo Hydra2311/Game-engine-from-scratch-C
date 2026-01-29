@@ -90,8 +90,8 @@ int main()
 			}
 			if(maxtries == 0)
 			{
-				fprintf(stdout,"Failed to login\n");
-				exit(2);
+				fprintf(stderr,"Failed to login\n");
+				exit(-5);
 			}
 		}
 	}
@@ -164,13 +164,24 @@ int main()
 				if(enemycount == 0)
 				{
 					enemies = (Enemy *)malloc(enemycapacity * sizeof(Enemy));
+					if (enemies == NULL)
+					{
+						fprintf(stderr,"Couldn't allocate memory\n");
+						exit(-7);
+					}
 				}
 				if(enemycount >= enemycapacity)
 				{
 					Enemy *tempenemies;
 					enemycapacity += 5;
 					tempenemies = (Enemy *)realloc(enemies,(enemycapacity * sizeof(Enemy)));
+					if (tempenemies == NULL)
+					{
+						fprintf(stderr,"Couldn't allocate memory\n");
+						exit(-8);						
+					}
 					enemies = tempenemies;
+					free(tempenemies);
 				}
 				enemies[enemycount] = createene(erch);
 				fprintf(stdout,"Your %s has been created\n",EnRaces[erch]);
@@ -184,6 +195,11 @@ int main()
 			case '*':
 			{
 				fprintf(stdout,"Thank you for using our app\n");
+				free(map);
+				if (enemycount>0)
+				{
+					free(enemies);
+				}
 				exit(1);
 			}
 		}

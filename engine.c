@@ -283,7 +283,7 @@ Enemy createene(int choice) /*Enemy stat block*/
 	return baseenemy;
 }
 
-int randspawn(int x)
+int randspawn(int x) /*Character spawning based on map length*/
 {
 	srand(time(NULL));
 
@@ -292,6 +292,8 @@ int randspawn(int x)
 
 void diceroll(int lim,int *result)
 {
+	/*Prints random numbers based on the var amount, so that it looks like*/
+	/*the dice is actually rolling.*/
 	srand(time(NULL));
 	int amount=20,i,cur_val;
 
