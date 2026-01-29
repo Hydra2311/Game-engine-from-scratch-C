@@ -48,5 +48,6 @@ void jump(char **,int ,int ,int ,int ); /*Jumps based on the height given*/
 Enemy createene(int ); /*Creates an enemy's stat block*/
 int spawnenemy(char **,int ,int ); /*Randomly spawns an enemy on the map*/
 int randspawn(int );
+void diceroll(int ,int *);
 
 #endif

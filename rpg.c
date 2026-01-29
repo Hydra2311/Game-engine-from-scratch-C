@@ -95,11 +95,8 @@ int main()
 			}
 		}
 	}
-
-	srand(time(NULL));
-	curpos = randspawn(x);
-
 	map = createmap(x,y);
+	curpos = randspawn(x);
 	base = y-2;
 
 	fprintf(stdout,"Choose a name: ");

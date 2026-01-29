@@ -289,3 +289,24 @@ int randspawn(int x)
 
 	return (rand()%x);
 }
+
+void diceroll(int lim,int *result)
+{
+	srand(time(NULL));
+	int amount=20,i,cur_val;
+
+    for(i = 0; i < amount; i++)
+    {
+        int delay = 50000 + (i * 1000); 
+
+        cur_val = (rand()%lim) + 1;
+        
+        printf("\rRolling: %d   ", cur_val);
+		fflush(stdout);
+        
+        usleep(delay);
+    }
+
+    *result = cur_val;
+    printf("\nFinal Result: %d\n", *result);
+}
