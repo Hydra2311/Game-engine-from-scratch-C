@@ -15,9 +15,9 @@ int main()
 	char **map,buf[200],buf2[30],response,temp_pos,c;
 	int x=30,y=4;
 	int rch,erch,enemycount=0,enemycapacity=5;
-	int i,j;
+	int i,j,k;
 	int flag = FALSE,check,maxtries = 3;
-	int curpos,next_pos,enepos,base;
+	int curpos,next_pos,enepos,base,close_ene_r=-1,close_ene_l=-1;
 	FILE *fpa,*fpr;
 	Form baseform,forcheck;
 	Enemy *enemies;
@@ -183,11 +183,10 @@ int main()
 					enemies = tempenemies;
 					free(tempenemies);
 				}
-				enemies[enemycount] = createene(erch);
+				enemies[enemycount] = createene(erch,map,x,y);
 				fprintf(stdout,"Your %s has been created\n",EnRaces[erch]);
 
-				enepos = spawnenemy(map,x,y);
-				map[base][enepos] = enemies[enemycount].race;
+				map[base][enemies[enemycount].enpos] = enemies[enemycount].race;
 				displaymap(map,x,y,curpos);
 				enemycount++;
 				break;
@@ -203,23 +202,75 @@ int main()
 				exit(1);
 			}
 		}
-		if((enemycount>0) && (enepos>curpos) && (response == 'R'))
+		if (response == 'R')
 		{
-			enemies[enemycount-1].hp = enemies[enemycount-1].hp - 1;
-			if (enemies[enemycount-1].hp <= 0)
+			if (close_ene_r == -1)
 			{
-				map[base][enepos] = ' ';
-				enemycount--;
+				for(i=curpos+1;i<x;i++)
+				{
+					if(map[base][i] != ' ')
+					{
+						close_ene_r = i;
+						break;
+					}
+				}
+			}
+			if((enemycount>0) && (close_ene_r != -1))
+			{
+				for(i=0;i<enemycount;i++)
+				{
+					if(enemies[i].enpos == close_ene_r)
+					{
+						enemies[i].hp = enemies[i].hp - 1;
+						if (enemies[i].hp <= 0)
+						{
+							map[base][enemies[i].enpos] = ' ';
+							for(k = i; k < enemycount - 1; k++) 
+                    		{
+                        		enemies[k] = enemies[k+1];
+                    		}
+							enemycount--;
+							close_ene_r = -1;
+						}
+						break;
+					}
+				}
 			}
 		}
-		else if((enemycount>0) && (enepos<curpos) && (response == 'L'))
+		if (response == 'L')
 		{
-			enemies[enemycount-1].hp = enemies[enemycount-1].hp - 1;
-			if (enemies[enemycount-1].hp <= 0)
+			if (close_ene_l == -1)
 			{
-				map[base][enepos] = ' ';
-				enemycount--;
-			}			
+				for(i=curpos-1;i>-1;i--)
+				{
+					if(map[base][i] != ' ')
+					{
+						close_ene_l = i;
+						break;
+					}
+				}
+			}
+			if((enemycount>0) && (close_ene_l != -1))
+			{
+				for(i=0;i<enemycount;i++)
+				{
+					if(enemies[i].enpos == close_ene_l)
+					{
+						enemies[i].hp = enemies[i].hp - 1;
+						if (enemies[i].hp <= 0)
+						{
+							map[base][enemies[i].enpos] = ' ';
+							for(k = i; k < enemycount - 1; k++) 
+                    		{
+                        		enemies[k] = enemies[k+1];
+                    		}
+							enemycount--;
+							close_ene_l = -1;
+						}
+						break;
+					}
+				}
+			}
 		}
 	}
 

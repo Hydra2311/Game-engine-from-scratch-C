@@ -244,10 +244,10 @@ void jump(char **map,int x,int y,int curpos,int height) /*Function to jump*/
 	}
 }
 
-int spawnenemy(char **map,int x,int y) /*Function to spawn enemy*/
+Enemy createene(int choice,char **map,int x,int y) /*Enemy stat block*/
 {
-	/*Randomly generates a position on the x-axis and it returns it if*/
-	/*it's empty.*/
+	/*Based on the struct in engine.h*/
+	Enemy baseenemy;
 	int enepos,att = 0,maxatt = 75;
 	srand(time(NULL));
 	enepos = rand()%x;
@@ -259,25 +259,19 @@ int spawnenemy(char **map,int x,int y) /*Function to spawn enemy*/
 		att++;
 	}
 
-	return enepos;
-}
-
-Enemy createene(int choice) /*Enemy stat block*/
-{
-	/*Based on the struct in engine.h*/
-	Enemy baseenemy;
-
 	if (choice == Goblin)
 	{
 		baseenemy.race = 'g';
 		baseenemy.hp = 2;
 		baseenemy.power = 1;
+		baseenemy.enpos = enepos;
 	}
 	else if (choice == Hobgoblin)
 	{
 		baseenemy.race = 'H';
 		baseenemy.hp = 4;
 		baseenemy.power = 2;
+		baseenemy.enpos = enepos;
 	}
 
 	return baseenemy;

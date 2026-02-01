@@ -15,6 +15,7 @@ typedef struct /*Enemy stats*/
 	char race;
 	int hp;
 	int power;
+	int enpos;
 }Enemy;
 
 typedef struct /*Character stats*/
@@ -45,8 +46,7 @@ void charshootl(char **,int ,int ,int ); /*Shoots bullet to the left*/
 Form fillform(char[] ,char[] ); /*Puts username & password in struct*/
 int checkform(Form ,Form ); /*Compares the register form with the login form*/
 void jump(char **,int ,int ,int ,int ); /*Jumps based on the height given*/
-Enemy createene(int ); /*Creates an enemy's stat block*/
-int spawnenemy(char **,int ,int ); /*Randomly spawns an enemy on the map*/
+Enemy createene(int , char **,int ,int ); /*Creates an enemy's stat block*/
 int randspawn(int ); /*Randomly spawns character on the map*/
 void diceroll(int ,int *); /*Dice Rolling Animation*/
 
