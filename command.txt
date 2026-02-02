@@ -1,1 +1,3 @@
 gcc -c engine.c -o engine.o && ar rcs libengine.a engine.o && gcc game.c -L. -lengine && ./a.out
+
+gcc -c engine.c -o engine.o && ar rcs libengine.a engine.o && gcc -I./libs/Unity/src Testengine.c engine.c libs/Unity/src/unity.c -L. -lengine && ./a.out
