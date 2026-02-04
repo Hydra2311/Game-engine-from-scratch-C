@@ -68,5 +68,6 @@ int main (void)
     RUN_TEST(test_spawn);
 
     UNITY_END();
+    printf("\n");
     return 0;
 }
