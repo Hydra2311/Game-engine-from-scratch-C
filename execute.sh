@@ -1,5 +1,7 @@
 #!/bin/bash
 
+#Bash script to automate compiling and running the unit tests, the engine and the games
+
 ctest="gcc -c engine.c -o engine.o && ar rcs libengine.a engine.o && gcc -I./libs/Unity/src Testengine.c engine.c libs/Unity/src/unity.c -L. -lengine && ./a.out"
 crpg="gcc -c engine.c -o engine.o && ar rcs libengine.a engine.o && gcc rpg.c -L. -lengine && ./a.out"
 cluck="gcc -c engine.c -o engine.o && ar rcs libengine.a engine.o && gcc luck.c -L. -lengine && ./a.out"

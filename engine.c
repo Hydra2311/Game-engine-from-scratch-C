@@ -4,6 +4,8 @@
 #include <string.h>
 #include <unistd.h>
 #include <time.h>
+#define TRUE 1
+#define FALSE 0
 
 char ** createmap(int x,int y) /*the dimensions of the map you wish to create*/
 {	
@@ -305,4 +307,41 @@ void diceroll(int lim,int *result)
 
     *result = cur_val;
     printf("\nFinal Result: %d\n", *result);
+}
+
+int drawcard(Deck Jack[],int size) /*Randomly draws card based on the size of the deck*/
+{
+	srand(time(NULL));
+	int amount = (size/sizeof(Jack[0]));
+
+	return (rand()%amount + 1);
+}
+
+int ace(int *firstace,int hpoints,int *chosen1) /*Calling by reference using pointers*/
+{
+	/*Decision making for the "house" when it draws an ace based on, the amount of aces*/
+	/*it has, if it's the first ace drawn and the amount of points it already has.*/
+
+	if (*(firstace))
+    {
+        if ((hpoints <= 10) && (hpoints >= 5))
+		{
+            hpoints += 11;
+		}
+        else
+        {
+            hpoints += 1;
+            *(chosen1) = TRUE;
+        }
+		*(firstace) = FALSE;
+    }
+    else
+    {
+        if (*(chosen1))
+            hpoints += 11;
+        else
+            hpoints += 1;
+    }
+
+	return hpoints;
 }

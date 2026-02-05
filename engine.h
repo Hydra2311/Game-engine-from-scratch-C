@@ -33,7 +33,7 @@ typedef struct /*Login/Register form*/
 
 typedef struct /*Struct for Card Games*/
 {
-	char card[20];
+	char card[10];
 	int points;
 }Deck;
 
@@ -49,5 +49,7 @@ void jump(char **,int ,int ,int ,int ); /*Jumps based on the height given*/
 Enemy createene(int , char **,int ,int ); /*Creates an enemy's stat block*/
 int randspawn(int ); /*Randomly spawns character on the map*/
 void diceroll(int ,int *); /*Dice Rolling Animation*/
+int drawcard(Deck[] ,int ); /*Random card draw*/
+int ace(int *,int ,int *); /*Decision making for drawing an Ace*/
 
 #endif

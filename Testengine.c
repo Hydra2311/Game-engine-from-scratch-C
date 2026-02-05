@@ -2,6 +2,8 @@
 #include <string.h>
 #include "unity.h"
 #include "engine.h" 
+#define TRUE 1
+#define FALSE 0
 
 /*Unity framework from GitHub : Unit tests for engine.c*/
 
@@ -58,6 +60,49 @@ void test_spawn()
     TEST_ASSERT_GREATER_THAN(-1,output);
 }
 
+void test_draw()
+{
+    /*Testing if the card drawn is in the limits of the deck*/
+
+    Deck Blackjack[] = {
+        {"2", 2}, {"3", 3}, {"4", 4}, {"5", 5}, {"6", 6},
+        {"7", 7}, {"8", 8}, {"9", 9}, {"10", 10},
+        {"Jack", 10}, {"Queen", 10}, {"King", 10}, {"Ace", 1} 
+    };
+
+    int output = drawcard(Blackjack,sizeof(Blackjack));
+
+    TEST_ASSERT_LESS_THAN(14,output);
+    TEST_ASSERT_GREATER_THAN(0,output);
+}
+
+void test_ace()
+{
+    /*Testing all the edge cases for the decision making of the "house" when*/
+    /*it draws an ace*/
+
+    int true = TRUE,false = FALSE;
+    int output1 = ace(&true,7,&false);
+
+    true = TRUE; false = FALSE;
+    int output2 = ace(&true,12,&false);
+
+    true = TRUE; false = FALSE;
+    int output3 = ace(&true,3,&false);
+
+    true = TRUE; false = FALSE;
+    int output4 = ace(&false,10,&true);
+
+    true = TRUE; false = FALSE;
+    int output5 = ace(&false,10,&false);
+
+    TEST_ASSERT_EQUAL(output1,18);
+    TEST_ASSERT_EQUAL(output2,13);
+    TEST_ASSERT_EQUAL(output3,4);
+    TEST_ASSERT_EQUAL(output4,21);
+    TEST_ASSERT_EQUAL(output5,11);        
+}
+
 int main (void)
 {
     printf("\n");
@@ -66,6 +111,8 @@ int main (void)
     RUN_TEST(test_charmove);
     RUN_TEST(test_form);
     RUN_TEST(test_spawn);
+    RUN_TEST(test_draw);
+    RUN_TEST(test_ace);
 
     UNITY_END();
     printf("\n");

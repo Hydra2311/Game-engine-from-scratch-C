@@ -13,6 +13,8 @@ int main()
     };
     int acecount=0;
     int resi,result;
+    int firstace = TRUE,chosen1 = FALSE,card,hpoints=0,ppoints=0,pulls=0;
+    char housecards[5][10],playercards[5][10];
     char c;
     while (TRUE)
     {
@@ -67,6 +69,18 @@ int main()
             }
             case 2:
             {
+                while (hpoints <= 21)
+                {
+                    card = drawcard(Blackjack,sizeof(Blackjack));
+                    if(card != 13)
+                    {
+                        hpoints += Blackjack[card].points;
+                    }
+                    else
+                    {
+                        hpoints += ace(&firstace,hpoints,&chosen1);
+                    }
+                }
                 break;
             }
             case 3:
