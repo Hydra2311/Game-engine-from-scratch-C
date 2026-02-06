@@ -72,8 +72,8 @@ void test_draw()
 
     int output = drawcard(Blackjack,sizeof(Blackjack));
 
-    TEST_ASSERT_LESS_THAN(14,output);
-    TEST_ASSERT_GREATER_THAN(0,output);
+    TEST_ASSERT_LESS_THAN(13,output);
+    TEST_ASSERT_GREATER_THAN(-1,output);
 }
 
 void test_ace()
@@ -114,7 +114,5 @@ int main (void)
     RUN_TEST(test_draw);
     RUN_TEST(test_ace);
 
-    UNITY_END();
-    printf("\n");
-    return 0;
+    return UNITY_END();
 }

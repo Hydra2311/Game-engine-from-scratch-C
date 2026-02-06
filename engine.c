@@ -313,8 +313,9 @@ int drawcard(Deck Jack[],int size) /*Randomly draws card based on the size of th
 {
 	srand(time(NULL));
 	int amount = (size/sizeof(Jack[0]));
+	usleep(600000);
 
-	return (rand()%amount + 1);
+	return (rand()%amount);
 }
 
 int ace(int *firstace,int hpoints,int *chosen1) /*Calling by reference using pointers*/

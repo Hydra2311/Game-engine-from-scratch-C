@@ -69,18 +69,31 @@ int main()
             }
             case 2:
             {
-                while (hpoints <= 21)
+                while (TRUE)
                 {
                     card = drawcard(Blackjack,sizeof(Blackjack));
-                    if(card != 13)
-                    {
+                    printf("%s\n\n",Blackjack[card].card);
+                    if (card != 12)
                         hpoints += Blackjack[card].points;
-                    }
                     else
-                    {
                         hpoints += ace(&firstace,hpoints,&chosen1);
+                    if ((hpoints >= 15) && (hpoints < 21))
+                    {
+                        printf("The House is done.\nPlayer's turn.\n");
+                        break;
+                    }
+                    else if (hpoints == 21)
+                    {
+                        printf("The House has BLACKJACK!!!\nThe only to survive is with a BLACKJACK of your own!\n");
+                        break;
+                    }
+                    else if (hpoints > 21)
+                    {
+                        printf("The House has over 21.\nThe player WINS!!!\n");
+                        break;
                     }
                 }
+                hpoints = 0;
                 break;
             }
             case 3:

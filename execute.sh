@@ -9,7 +9,13 @@ cluck="gcc -c engine.c -o engine.o && ar rcs libengine.a engine.o && gcc luck.c 
 echo "Testing..."
 eval "$ctest"
 
-echo "1.Rpg 2.Luck 3.Error"
+#Automatically exits if the tests aren't successful
+if [ $? -ne 0 ]; then
+    echo "Tests failed. Exiting with error."
+    exit 1
+fi
+
+echo "1.Rpg 2.Luck 3.Exit"
 read answer
 
 if [[ "$answer" == 1 ]]; then
@@ -19,6 +25,6 @@ elif [[ "$answer" == 2 ]]; then
     echo "Executing luck.c"
     eval "$cluck"
 else
-    echo "Exitting with Error"
-    exit 1
+    echo "Exiting..."
+    exit 0
 fi
