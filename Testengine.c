@@ -103,7 +103,7 @@ void test_ace()
     TEST_ASSERT_EQUAL(output5,11);        
 }
 
-int main (void)
+int main()
 {
     printf("\n");
     UNITY_BEGIN();

@@ -14,18 +14,17 @@ int main()
     };
     int acecount=0;
     int i;
-    int resi,result,flag = TRUE;
+    int resi,result,greatflag = TRUE,flag = TRUE;
     int firstace = TRUE,chosen1 = FALSE,chosen11 = FALSE,card,firstcard,hpoints=0,ppoints=0;
-    char housecards[5][10],playercards[5][10];
     char c,r;
-    while (TRUE)
+    while (greatflag)
     {
         fprintf(stdout,"1.Dice Roll 2.Blackjack 3.Quit: ");
         scanf("%d",&resi);
         while((c = getchar()) != '\n');
         switch (resi)
         {
-            case 1:
+            case 1: /*Gives the option of 6 different dice*/
             {
                 fprintf(stdout,"1.D4,2.D6,3.D8,4.D10,5.D12,6.D20: ");
                 scanf("%d",&resi);
@@ -69,13 +68,17 @@ int main()
                 }
                 break;
             }
-            case 2:
+            case 2: /*Main Blackjack game loop*/
             {
+                /*House's/Computer's turn*/
+
                 firstcard = drawcard(Blackjack,sizeof(Blackjack));
                 printf("Hidden\n\n");
                 if (card != 12)
                     hpoints += Blackjack[firstcard].points;
                 else
+                    /*Function ace is used to handle drawing an ace based on different circumstances*/
+                    /*such as, if it's the first ace drawn and if a 1 has been already chosen.*/
                     hpoints = ace(&firstace,hpoints,&chosen1);                
                 while (flag)
                 {
@@ -110,7 +113,11 @@ int main()
                     break;
                 }
                 usleep(200000);
+
+                /*Player's turn*/
+
                 printf("Your starting hand\n");
+                /*Draws automatically 2 cards for the player*/
                 for(i=0;i<2;i++)
                 {
                     card = drawcard(Blackjack,sizeof(Blackjack));
@@ -203,11 +210,15 @@ int main()
             case 3:
             {
                 fprintf(stdout,"Thank you for playing our game\n");
-                exit(1);
+                greatflag = FALSE;
+                break;
+            }
+            default:
+            {
+                fprintf(stdout,"Invalid choice given. Please choose again.\n");
             }
         }
     }
-
     return 0;
 }
 

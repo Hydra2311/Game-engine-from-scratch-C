@@ -10,7 +10,7 @@ echo "Testing..."
 eval "$ctest"
 
 #Automatically exits if the tests aren't successful
-if [ $? -ne 0 ]; then
+if [[ $? -ne 0 ]]; then
     echo "Tests failed. Exiting with error."
     exit 1
 fi

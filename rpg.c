@@ -16,13 +16,15 @@ int main()
 	int x=30,y=4;
 	int rch,erch,enemycount=0,enemycapacity=5;
 	int i,j,k;
-	int flag = FALSE,check,maxtries = 3;
+	int greatflag = TRUE,flag = FALSE,check,maxtries = 3;
 	int curpos,next_pos,enepos,base,close_ene_r=-1,close_ene_l=-1;
 	FILE *fpa,*fpr;
 	Form baseform,forcheck;
 	Enemy *enemies;
 	Char char1;
 
+	/*If the logindata.txt is empty, asks the user to register with username and password.*/
+	/*If it isn't, asks the user to login and compares the data given with the registered data.*/
 	fpa = fopen("logindata.txt","a");
 	fpr = fopen("logindata.txt","r");
 	if (fpa == NULL)
@@ -95,6 +97,8 @@ int main()
 			}
 		}
 	}
+	/*Character and map creation*/
+
 	map = createmap(x,y);
 	curpos = randspawn(x);
 	base = y-2;
@@ -118,7 +122,7 @@ int main()
 
 	displaymap(map,x,y,curpos);
 
-	while (TRUE)
+	while (greatflag)
 	{
 		fprintf(stdout,"Right > Left < ShootRight R Shootleft L Jump ^ SpawnEnemy & Exit *\n");
 		response = getchar();
@@ -161,6 +165,9 @@ int main()
 				scanf("%d",&erch);
 				while ((c = getchar()) != '\n');
 				erch = (EnRace) erch;
+				/*If there are no enemies, it allocates memory for (int capacity) enemies.*/
+				/*Otherwise if the enemy count is about to surpass the capacity it*/
+				/*reallocates more memory for the array of enemies.*/
 				if(enemycount == 0)
 				{
 					enemies = (Enemy *)malloc(enemycapacity * sizeof(Enemy));
@@ -181,7 +188,6 @@ int main()
 						exit(-8);						
 					}
 					enemies = tempenemies;
-					free(tempenemies);
 				}
 				enemies[enemycount] = createene(erch,map,x,y);
 				fprintf(stdout,"Your %s has been created\n",EnRaces[erch]);
@@ -194,21 +200,35 @@ int main()
 			case '*':
 			{
 				fprintf(stdout,"Thank you for using our app\n");
+				/*Freeing all the memory that has been allocated manually*/
+
+				for(i=0;i<y;i++)
+				{
+					free(map[i]);
+				}
 				free(map);
+
 				if (enemycount>0)
 				{
 					free(enemies);
 				}
-				exit(1);
+				greatflag = FALSE;
+				break;
+			}
+			default:
+			{
+				fprintf(stdout,"Invalid choice given.");
 			}
 		}
+		/*Dealing damage based on the direction of the shot and the closest*/
+		/*enemy to that direction.*/
 		if (response == 'R')
 		{
 			if (close_ene_r == -1)
 			{
 				for(i=curpos+1;i<x;i++)
 				{
-					if(map[base][i] != ' ')
+					if(map[base][i] == 'H' || map[base][i] == 'g')
 					{
 						close_ene_r = i;
 						break;
@@ -221,7 +241,7 @@ int main()
 				{
 					if(enemies[i].enpos == close_ene_r)
 					{
-						enemies[i].hp = enemies[i].hp - 1;
+						enemies[i].hp--;
 						if (enemies[i].hp <= 0)
 						{
 							map[base][enemies[i].enpos] = ' ';
@@ -243,7 +263,7 @@ int main()
 			{
 				for(i=curpos-1;i>-1;i--)
 				{
-					if(map[base][i] != ' ')
+					if(map[base][i] == 'H' || map[base][i] == 'g')
 					{
 						close_ene_l = i;
 						break;
@@ -256,7 +276,7 @@ int main()
 				{
 					if(enemies[i].enpos == close_ene_l)
 					{
-						enemies[i].hp = enemies[i].hp - 1;
+						enemies[i].hp--;
 						if (enemies[i].hp <= 0)
 						{
 							map[base][enemies[i].enpos] = ' ';
